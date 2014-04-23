@@ -38,6 +38,7 @@ Yes just use the ''attribute_all_content_to_user_id'' filter
 * 23 apr 2014
 * Add: Code improve, thanks Greg
 * Mod: The profile "remove" link is not the last item (hook prio changed)
+* Mod: Remove "style" prop, add CSS rules.
 * Fix: Posts count is not correct and include all CPTs
 
 = 1.0 =
