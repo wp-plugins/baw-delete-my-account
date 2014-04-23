@@ -5,7 +5,9 @@ Description: This plugin permits your members to delete their own account.
 Author: Julio Potier
 Version: 1.1
 Author URI: http://boiteaweb.fr
-PLugin URI: http://boiteaweb.fr
+Plugin URI: http://boiteaweb.fr/delete-account-autoriser-suppression-comptes-8061.html
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */
 
 /* TODO: Comment this mess :) */

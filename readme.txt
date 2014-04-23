@@ -5,6 +5,8 @@ Tags: user, member, delete
 Requires at least: 3.1
 Tested up to: 3.9
 Stable tag: trunk
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 This plugin permits your members to delete their own account. All languages supported!
 
