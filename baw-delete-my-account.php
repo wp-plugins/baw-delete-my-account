@@ -3,7 +3,7 @@
 Plugin Name: BAW Delete My Account
 Description: This plugin permits your members to delete their own account. 
 Author: Julio Potier
-Version: 1.0
+Version: 1.1
 Author URI: http://boiteaweb.fr
 PLugin URI: http://boiteaweb.fr
 */
@@ -18,7 +18,7 @@ function __bawdma_load_text_domain()
 	}
 }
 
-add_action( 'show_user_profile', 'bawdma_personal_options' );
+add_action( 'show_user_profile', 'bawdma_personal_options', PHP_INT_MAX );
 function bawdma_personal_options()
 {
 	printf( '<a href="%s" class="redlink">%s %s</a>', wp_nonce_url( site_url( 'wp-login.php?action=delete-account', 'login_post' ), 'delete-account' ), __( 'Remove' ), __( 'My Account' ) );
@@ -35,6 +35,7 @@ function bawdma_add_css()
 	.button-deletion{background:#CC2E2E !important;border-color:#A20000 !important;color:#fff !important}
 	.button-deletion:hover{background:#BE1E1E !important}
 	.userinfo{list-style-position:inside}
+	.cancel{margin-top:15px;text-align:center}
 </style>
 <?php
 }
@@ -54,7 +55,9 @@ function __bawdma_cb_delete_account() {
 				$userinfos .= wp_sprintf( '<li>%s %s</li>', __( 'URL:' ), esc_html( $userdata->user_url ) );
 			}
 			$userinfos .= wp_sprintf( '<li>%s%s %s</li>', _x( 'Registered', 'user' ), $DP, $userdata->user_registered );
-			require( ABSPATH . '/wp-admin/includes/user.php' );
+			if ( ! function_exists( 'get_editable_roles' ) ) {
+				require( ABSPATH . 'wp-admin/includes/user.php' );
+			}
 			$roles = array_intersect_key( wp_list_pluck( get_editable_roles(), 'name' ), array_flip( $userdata->roles ) );
 			$userinfos .= wp_sprintf( '<li>%s%s %s</li>', __( 'Role' ), $DP, wp_sprintf( '%l', array_map( 'translate_user_role', $roles ) ) );
 			$content = wp_sprintf( '%s<br>&raquo; <b>%s %s</b> (%s)<br><br>%s<br>', __( 'You have specified this user for deletion:' ), $userdata->first_name, $userdata->last_name, $userdata->user_nicename, __( 'About the user' ) );
@@ -66,8 +69,9 @@ function __bawdma_cb_delete_account() {
 					<input type="submit" name="wp-submit" id="wp-submit" class="button button-primary button-deletion large-text" value="<?php _e( 'Confirm Deletion' ); ?>" />
 					<?php 
 					$uid = apply_filters( 'attribute_all_content_to_user_id', null );
-					if ( ! $uid || ! $attr_user = get_user_by( 'id', $uid ) ) {
-						$count_user_posts = count_user_posts( $current_user->ID );
+					if ( ! $uid || ! $attr_user = get_user_by( 'id', $uid ) || (int) $uid === get_current_user_id() ) {
+						global $wpdb;
+						$count_user_posts = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(ID) FROM $wpdb->posts WHERE post_author = %d AND post_status = 'publish'", $current_user->ID ) );
 					?>
 						<div style="text-align:center"><em>(<?php echo __( 'Caution:' ) . ' ' . wp_sprintf( __( 'You are about to delete <strong>%s</strong>.' ), wp_sprintf( _n( '%s Post', '%s Posts', $count_user_posts ), $count_user_posts ) ); ?>)</em></div>
 					<?php } else { 
@@ -75,7 +79,7 @@ function __bawdma_cb_delete_account() {
 						<div style="text-align:center"><em>(<?php echo wp_sprintf( '%s %s <b>%s %s</b> (%s)', wp_sprintf( __( '%s and %s' ), '', '' ), __( 'Attribute all content to:' ), $attr_user->first_name, $attr_user->last_name , $attr_user->user_nicename ); ?>)</em></div>
 					<?php }?>
 				</p>
-				<p class="cancel" style="margin-top:15px;text-align:center">
+				<p class="cancel">
 					<i><a href="<?php echo $back; ?>"><?php _e( 'Go back' ); ?></a></i>
 				</p>
 			</form>
@@ -102,7 +106,10 @@ function __bawdma_cb_delete_confirm() {
 			wp_die( wp_sprintf( '<p>%s</p><p id="backtoblog">%s</p>', $message, $link ), $title );
 		} else {
 			$uid = apply_filters( 'attribute_all_content_to_user_id', null );
-			require( ABSPATH . '/wp-admin/includes/user.php' );
+			$uid = (int) $uid !== get_current_user_id() ? $uid : null;
+			if ( ! function_exists( 'wp_delete_user' ) ) {
+				require( ABSPATH . '/wp-admin/includes/user.php' );
+			}
 			if ( wp_delete_user( $current_user->ID, $uid ) ) {
 				wp_clear_auth_cookie();
 				login_header( __( 'User deleted.' ), null, null ); 

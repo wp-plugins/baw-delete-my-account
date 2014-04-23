@@ -10,7 +10,9 @@ This plugin permits your members to delete their own account. All languages supp
 
 == Description ==
 
-This plugin permits your members to delete their own account. You just can not delete all admin users, of course. All languages are already supported because i use the internal l10n files form your installation ;)
+This plugin permits your members to delete their own account. You just can not delete all admin users, of course.
+
+All languages are already supported because i use the internal l10n files form your installation ;)
 
 == Installation ==
 
@@ -27,10 +29,16 @@ Yes just use the ''attribute_all_content_to_user_id'' filter
 
 == Screenshots ==
 
-1. The link into your profile
+1. The link in your profile
 1. Delete confirmation screen
 
 == Changelog ==
+
+= 1.1 =
+* 23 apr 2014
+* Add: Code improve, thanks Greg
+* Mod: The profile "remove" link is not the last item (hook prio changed)
+* Fix: Posts count is not correct and include all CPTs
 
 = 1.0 =
 * 22 apr 2014
