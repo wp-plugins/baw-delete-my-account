@@ -32,7 +32,7 @@ function bawdma_add_css()
 <style>
 	.redlink{color:#f00}
 	.redlink:hover{color:#c00}
-	.button-deletion{background:#CC2E2E !important;border-color:#A20000 !important;color:#fff !important}
+	.button-deletion{background:#CC2E2E!important;border-color:#A20000!important;color:#fff!important;float:none!important;margin-bottom:1em!important}
 	.button-deletion:hover{background:#BE1E1E !important}
 	.userinfo{list-style-position:inside}
 	#deletionform{text-align:center}
