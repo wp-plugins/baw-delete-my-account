@@ -35,7 +35,7 @@ function bawdma_add_css()
 	.button-deletion{background:#CC2E2E !important;border-color:#A20000 !important;color:#fff !important}
 	.button-deletion:hover{background:#BE1E1E !important}
 	.userinfo{list-style-position:inside}
-	.cancel{margin-top:15px;text-align:center}
+	#deletionform{text-align:center}
 </style>
 <?php
 }
@@ -65,7 +65,7 @@ function __bawdma_cb_delete_account() {
 			?>
 			<form name="deletionform" id="deletionform" action="<?php echo esc_url( site_url( 'wp-login.php?action=delete-confirm', 'login_post' ) ); ?>" method="post">
 				<?php wp_nonce_field( 'delete-confirm', '_wpnonce', false ); ?>
-				<p class="submit" style="padding-top:20px">
+				<p class="submit">
 					<input type="submit" name="wp-submit" id="wp-submit" class="button button-primary button-deletion large-text" value="<?php _e( 'Confirm Deletion' ); ?>" />
 					<?php 
 					$uid = apply_filters( 'attribute_all_content_to_user_id', null );
@@ -73,13 +73,13 @@ function __bawdma_cb_delete_account() {
 						global $wpdb;
 						$count_user_posts = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(ID) FROM $wpdb->posts WHERE post_author = %d AND post_status = 'publish'", $current_user->ID ) );
 					?>
-						<div style="text-align:center"><em>(<?php echo __( 'Caution:' ) . ' ' . wp_sprintf( __( 'You are about to delete <strong>%s</strong>.' ), wp_sprintf( _n( '%s Post', '%s Posts', $count_user_posts ), $count_user_posts ) ); ?>)</em></div>
+						<div><em>(<?php echo __( 'Caution:' ) . ' ' . wp_sprintf( __( 'You are about to delete <strong>%s</strong>.' ), wp_sprintf( _n( '%s Post', '%s Posts', $count_user_posts ), $count_user_posts ) ); ?>)</em></div>
 					<?php } else { 
 						?>
-						<div style="text-align:center"><em>(<?php echo wp_sprintf( '%s %s <b>%s %s</b> (%s)', wp_sprintf( __( '%s and %s' ), '', '' ), __( 'Attribute all content to:' ), $attr_user->first_name, $attr_user->last_name , $attr_user->user_nicename ); ?>)</em></div>
+						<div><em>(<?php echo wp_sprintf( '%s %s <b>%s %s</b> (%s)', wp_sprintf( __( '%s and %s' ), '', '' ), __( 'Attribute all content to:' ), $attr_user->first_name, $attr_user->last_name , $attr_user->user_nicename ); ?>)</em></div>
 					<?php }?>
 				</p>
-				<p class="cancel">
+				<p>
 					<i><a href="<?php echo $back; ?>"><?php _e( 'Go back' ); ?></a></i>
 				</p>
 			</form>
