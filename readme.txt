@@ -36,6 +36,11 @@ Yes just use the ''attribute_all_content_to_user_id'' filter
 
 == Changelog ==
 
+= 1.1.1 =
+* 29 apr 2014
+* Recycle CSS class, props Greglone
+* Better display of posts to be deleted or content to be re-attributed, props Greglone
+
 = 1.1 =
 * 23 apr 2014
 * Add: Code improve, thanks Greg

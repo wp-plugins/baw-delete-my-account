@@ -23,7 +23,7 @@ function __bawdma_load_text_domain()
 add_action( 'show_user_profile', 'bawdma_personal_options', PHP_INT_MAX );
 function bawdma_personal_options()
 {
-	printf( '<a href="%s" class="redlink">%s %s</a>', wp_nonce_url( site_url( 'wp-login.php?action=delete-account', 'login_post' ), 'delete-account' ), __( 'Remove' ), __( 'My Account' ) );
+	printf( '<p class="plugins widefat"><a href="%s" class="delete">%s %s</a<</p>', wp_nonce_url( site_url( 'wp-login.php?action=delete-account', 'login_post' ), 'delete-account' ), __( 'Remove' ), __( 'My Account' ) );
 }
 
 add_action( 'admin_print_styles-profile.php', 'bawdma_add_css' );
@@ -32,8 +32,6 @@ function bawdma_add_css()
 {
 ?>
 <style>
-	.redlink{color:#f00}
-	.redlink:hover{color:#c00}
 	.button-deletion{background:#CC2E2E!important;border-color:#A20000!important;color:#fff!important;float:none!important;margin-bottom:1em!important}
 	.button-deletion:hover{background:#BE1E1E !important}
 	.userinfo{list-style-position:inside}
@@ -69,18 +67,26 @@ function __bawdma_cb_delete_account() {
 				<?php wp_nonce_field( 'delete-confirm', '_wpnonce', false ); ?>
 				<p class="submit">
 					<input type="submit" name="wp-submit" id="wp-submit" class="button button-primary button-deletion large-text" value="<?php _e( 'Confirm Deletion' ); ?>" />
-					<?php 
-					$uid = apply_filters( 'attribute_all_content_to_user_id', null );
-					if ( ! $uid || ! $attr_user = get_user_by( 'id', $uid ) || (int) $uid === get_current_user_id() ) {
-						global $wpdb;
-						$count_user_posts = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(ID) FROM $wpdb->posts WHERE post_author = %d AND post_status = 'publish'", $current_user->ID ) );
-					?>
-						<div><em>(<?php echo __( 'Caution:' ) . ' ' . wp_sprintf( __( 'You are about to delete <strong>%s</strong>.' ), wp_sprintf( _n( '%s Post', '%s Posts', $count_user_posts ), $count_user_posts ) ); ?>)</em></div>
-					<?php } else { 
-						?>
-						<div><em>(<?php echo wp_sprintf( '%s %s <b>%s %s</b> (%s)', wp_sprintf( __( '%s and %s' ), '', '' ), __( 'Attribute all content to:' ), $attr_user->first_name, $attr_user->last_name , $attr_user->user_nicename ); ?>)</em></div>
-					<?php }?>
-				</p>
+					<?php
+					global $wpdb;
+					$count_user_posts = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(ID) FROM $wpdb->posts WHERE post_author = %d AND post_status = 'publish'", $current_user->ID ) );
+
+					if ( $count_user_posts ) {
+
+						$uid = apply_filters( 'attribute_all_content_to_user_id', null );
+						if ( ! $uid || ! $attr_user = get_user_by( 'id', $uid ) || (int) $uid === get_current_user_id() ) {
+							?>
+							<div><em>(<?php echo __( 'Caution:' ) . ' ' . wp_sprintf( __( 'You are about to delete <strong>%s</strong>.' ), wp_sprintf( _n( '%s Post', '%s Posts', $count_user_posts ), number_format_i18n( $count_user_posts ) ) ); ?>)</em></div>
+							<?php
+						}
+						else {
+							?>
+							<div><em>(<?php echo wp_sprintf( '%s %s <b>%s %s</b> (%s)', wp_sprintf( __( '%s and %s' ), '', '' ), __( 'Attribute all content to:' ), $attr_user->first_name, $attr_user->last_name , $attr_user->user_nicename ); ?>)</em></div>
+							<?php
+						}
+
+					} ?>
+				</p>				
 				<p>
 					<i><a href="<?php echo $back; ?>"><?php _e( 'Go back' ); ?></a></i>
 				</p>
