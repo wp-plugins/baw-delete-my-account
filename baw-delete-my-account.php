@@ -3,7 +3,7 @@
 Plugin Name: BAW Delete My Account
 Description: This plugin permits your members to delete their own account. 
 Author: Julio Potier
-Version: 1.1
+Version: 1.1.1
 Author URI: http://boiteaweb.fr
 Plugin URI: http://boiteaweb.fr/delete-account-autoriser-suppression-comptes-8061.html
 License: GPLv2 or later
