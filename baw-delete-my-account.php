@@ -3,7 +3,7 @@
 Plugin Name: BAW Delete My Account
 Description: This plugin permits your members to delete their own account. 
 Author: Julio Potier
-Version: 1.1.1
+Version: 1.1.2
 Author URI: http://boiteaweb.fr
 Plugin URI: http://boiteaweb.fr/delete-account-autoriser-suppression-comptes-8061.html
 License: GPLv2 or later
@@ -23,7 +23,7 @@ function __bawdma_load_text_domain()
 add_action( 'show_user_profile', 'bawdma_personal_options', PHP_INT_MAX );
 function bawdma_personal_options()
 {
-	printf( '<p class="plugins widefat"><a href="%s" class="delete">%s %s</a<</p>', wp_nonce_url( site_url( 'wp-login.php?action=delete-account', 'login_post' ), 'delete-account' ), __( 'Remove' ), __( 'My Account' ) );
+	printf( '<p class="plugins widefat"><a href="%s" class="delete">%s %s</a></p>', wp_nonce_url( site_url( 'wp-login.php?action=delete-account', 'login_post' ), 'delete-account' ), __( 'Remove' ), __( 'My Account' ) );
 }
 
 add_action( 'admin_print_styles-profile.php', 'bawdma_add_css' );
@@ -74,7 +74,7 @@ function __bawdma_cb_delete_account() {
 					if ( $count_user_posts ) {
 
 						$uid = apply_filters( 'attribute_all_content_to_user_id', null );
-						if ( ! $uid || ! $attr_user = get_user_by( 'id', $uid ) || (int) $uid === get_current_user_id() ) {
+						if ( ! ( $attr_user = get_user_by( 'id', $uid ) ) || (int) $uid === get_current_user_id() ) {
 							?>
 							<div><em>(<?php echo __( 'Caution:' ) . ' ' . wp_sprintf( __( 'You are about to delete <strong>%s</strong>.' ), wp_sprintf( _n( '%s Post', '%s Posts', $count_user_posts ), number_format_i18n( $count_user_posts ) ) ); ?>)</em></div>
 							<?php

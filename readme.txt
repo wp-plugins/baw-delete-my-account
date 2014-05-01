@@ -36,6 +36,11 @@ Yes just use the ''attribute_all_content_to_user_id'' filter
 
 == Changelog ==
 
+= 1.1.2 =
+* 02 may 2014
+* "if" fix props Greglone
+* "A" tag was not correctly closed, props Greglone
+
 = 1.1.1 =
 * 29 apr 2014
 * Recycle CSS class, props Greglone
