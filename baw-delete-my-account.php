@@ -3,8 +3,8 @@
 Plugin Name: BAW Delete My Account
 Description: This plugin permits your members to delete their own account. 
 Author: Julio Potier
-Version: 1.1.2
-Author URI: http://boiteaweb.fr
+Version: 1.2
+Author URI: http://wp-rocket.me
 Plugin URI: http://boiteaweb.fr/delete-account-autoriser-suppression-comptes-8061.html
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -23,7 +23,7 @@ function __bawdma_load_text_domain()
 add_action( 'show_user_profile', 'bawdma_personal_options', PHP_INT_MAX );
 function bawdma_personal_options()
 {
-	printf( '<p class="plugins widefat"><a href="%s" class="delete">%s %s</a></p>', wp_nonce_url( site_url( 'wp-login.php?action=delete-account', 'login_post' ), 'delete-account' ), __( 'Remove' ), __( 'My Account' ) );
+	printf( '<p class="plugins widefat"><a href="%s" class="delete"><b>%s %s</b></a></p>', wp_nonce_url( site_url( 'wp-login.php?action=delete-account', 'login_post' ), 'delete-account' ), __( 'Delete Permanently' ), esc_html( $GLOBALS['current_user']->display_name ) );
 }
 
 add_action( 'admin_print_styles-profile.php', 'bawdma_add_css' );
